@@ -1,3 +1,4 @@
+// app/api/run-pyspark/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { exec } from 'child_process';
 import fs from 'fs';
@@ -6,11 +7,38 @@ import { v4 as uuidv4 } from 'uuid';
 import { promisify } from 'util';
 
 const execPromise = promisify(exec);
+let imageChecked = false; // Simple cache to avoid checking on every request
 
 export const dynamic = 'force-dynamic';
 
+// Function to ensure the Docker image exists
+async function ensureDockerImage() {
+  if (imageChecked) return;
+  
+  try {
+    // Check if image exists locally
+    const { stdout } = await execPromise('docker images -q bitnami/spark:latest');
+    
+    if (!stdout.trim()) {
+      console.log('Docker image not found locally, pulling now...');
+      await execPromise('docker pull bitnami/spark:latest');
+      console.log('Docker image pulled successfully');
+    } else {
+      console.log('Docker image already exists locally');
+    }
+    
+    imageChecked = true;
+  } catch (error) {
+    console.error('Error checking or pulling Docker image:', error);
+    throw error;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // Ensure Docker image exists before proceeding
+    await ensureDockerImage();
+    
     const { code } = await request.json();
     
     if (!code) {
@@ -20,6 +48,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Rest of your code remains the same...
     // Create a unique ID for this run
     const id = uuidv4();
     const tempDir = path.join(process.cwd(), 'temp');
@@ -29,8 +58,8 @@ export async function POST(request: NextRequest) {
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
+
     
-    // Write code to a file
     fs.writeFileSync(scriptPath, code);
     
     try {
