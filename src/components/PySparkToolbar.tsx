@@ -1,5 +1,5 @@
 // components/PySparkToolbar.tsx
-import React from 'react';
+import React from "react";
 import {
   AppBar,
   Toolbar,
@@ -7,37 +7,32 @@ import {
   Box,
   Tooltip,
   IconButton,
-} from '@mui/material';
-import SaveIcon from '@mui/icons-material/Save';
-import UploadIcon from '@mui/icons-material/Upload';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+} from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import UploadIcon from "@mui/icons-material/Upload";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 interface PySparkToolbarProps {
   onSave: () => void;
-  onLoad: () => void;
+
   onRun: () => void;
   onHelp: () => void;
 }
 
 const PySparkToolbar: React.FC<PySparkToolbarProps> = ({
   onSave,
-  onLoad,
+
   onRun,
   onHelp,
 }) => {
   return (
-    <AppBar 
-      position="static" 
-      color="default" 
-      elevation={1}
-      sx={{ mb: 2 }}
-    >
+    <AppBar position="static" color="default" elevation={1} sx={{ mb: 2 }}>
       <Toolbar variant="dense">
-        <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>
+        <Box sx={{ flexGrow: 1, display: "flex", gap: 1 }}>
           <Tooltip title="Save workspace">
-            <Button 
-              startIcon={<SaveIcon />} 
+            <Button
+              startIcon={<SaveIcon />}
               onClick={onSave}
               size="small"
               variant="outlined"
@@ -45,18 +40,7 @@ const PySparkToolbar: React.FC<PySparkToolbarProps> = ({
               Save
             </Button>
           </Tooltip>
-          
-          <Tooltip title="Load workspace">
-            <Button
-              startIcon={<UploadIcon />}
-              onClick={onLoad}
-              size="small"
-              variant="outlined"
-            >
-              Load
-            </Button>
-          </Tooltip>
-          
+
           <Tooltip title="Run PySpark code">
             <Button
               startIcon={<PlayArrowIcon />}
@@ -69,13 +53,9 @@ const PySparkToolbar: React.FC<PySparkToolbarProps> = ({
             </Button>
           </Tooltip>
         </Box>
-        
+
         <Tooltip title="Help">
-          <IconButton
-            aria-label="help"
-            onClick={onHelp}
-            size="small"
-          >
+          <IconButton aria-label="help" onClick={onHelp} size="small">
             <HelpOutlineIcon />
           </IconButton>
         </Tooltip>
