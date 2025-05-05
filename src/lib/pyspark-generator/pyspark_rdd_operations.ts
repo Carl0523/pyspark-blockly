@@ -72,6 +72,6 @@ export function pyspark_rdd_collect(
 ): [string, Order] {
     const rdd = generator.valueToCode(block, 'RDD', Order.MEMBER) || 'sc.emptyRDD()';
 
-    const code = `${rdd}.collect()`;
+    const code = `print(${rdd}.collect())`;
     return [code, Order.FUNCTION_CALL];
 }
