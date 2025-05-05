@@ -29,7 +29,7 @@ const CodeDisplay: React.FC<CodeDisplayProps> = ({ code }) => {
           position: 'relative',
           height: '100%',
           minHeight: '200px',
-          maxHeight: '600px',
+          maxHeight: '450px',
           '&::-webkit-scrollbar': {
             width: '8px',
             height: '8px',

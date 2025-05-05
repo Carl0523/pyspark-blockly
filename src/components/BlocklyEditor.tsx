@@ -115,7 +115,7 @@ const BlocklyEditor = React.forwardRef<BlocklyEditorHandle, BlocklyEditorProps>(
         sx={{
           width: '100%',
           height: '100%',
-          minHeight: '600px',
+          minHeight: '450px',
           border: '1px solid #e0e0e0',
           borderRadius: 1,
         }}
