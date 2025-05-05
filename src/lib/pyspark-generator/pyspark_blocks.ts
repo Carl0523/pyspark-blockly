@@ -265,13 +265,6 @@ export function getPySparkToolbox() {
               TEXT: "/data/aircrafts_data.csv",
             },
           },
-          {
-            kind: "block",
-            type: "text",
-            fields: {
-              TEXT: "col_name",
-            },
-          },
         ],
       },
       {
