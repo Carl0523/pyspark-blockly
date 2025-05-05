@@ -88,85 +88,6 @@ function defineRDDBlocks() {
 }
 
 function defineUDFBlocks() {
-  Blockly.Blocks["pyspark_define_simple_udf"] = {
-    init: function (this: Blockly.Block) {
-      this.appendDummyInput()
-        .appendField("Define UDF")
-        .appendField(new Blockly.FieldTextInput("my_udf"), "UDF_NAME");
-      this.appendValueInput("FUNCTION")
-        .setCheck("String")
-        .appendField("function");
-      this.appendDummyInput()
-        .appendField("return type")
-        .appendField(
-          new Blockly.FieldDropdown([
-            ["Integer", "IntegerType()"],
-            ["String", "StringType()"],
-            ["Double", "DoubleType()"],
-            ["Boolean", "BooleanType()"],
-          ]),
-          "RETURN_TYPE"
-        );
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(290);
-      this.setTooltip("Define a simple PySpark UDF");
-      this.setHelpUrl("");
-    },
-  };
-
-  Blockly.Blocks["pyspark_double_value_udf"] = {
-    init: function (this: Blockly.Block) {
-      this.appendDummyInput()
-        .appendField("Define Double Value UDF")
-        .appendField(new Blockly.FieldTextInput("double_value"), "UDF_NAME");
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(290);
-      this.setTooltip("Define a UDF that doubles numeric values");
-      this.setHelpUrl("");
-    },
-  };
-
-  Blockly.Blocks["pyspark_string_length_udf"] = {
-    init: function () {
-      this.appendDummyInput()
-        .appendField("Define String Length UDF")
-        .appendField(new Blockly.FieldTextInput("string_length"), "UDF_NAME");
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(290);
-      this.setTooltip("Define a UDF that returns the length of a string");
-      this.setHelpUrl("");
-    },
-  };
-
-  Blockly.Blocks["pyspark_is_null_udf"] = {
-    init: function () {
-      this.appendDummyInput()
-        .appendField("Define Is Null UDF")
-        .appendField(new Blockly.FieldTextInput("is_null"), "UDF_NAME");
-      this.setPreviousStatement(true, null);
-      this.setNextStatement(true, null);
-      this.setColour(290);
-      this.setTooltip("Define a UDF that checks if a value is null");
-      this.setHelpUrl("");
-    },
-  };
-
-  Blockly.Blocks["pyspark_apply_udf"] = {
-    init: function () {
-      this.appendValueInput("UDF_NAME").setCheck(null).appendField("Apply UDF");
-      this.appendValueInput("COLUMN")
-        .setCheck("String")
-        .appendField("to column");
-      this.setOutput(true, "Column");
-      this.setColour(290);
-      this.setTooltip("Apply a UDF to a DataFrame column");
-      this.setHelpUrl("");
-    },
-  };
-
   Blockly.Blocks["pyspark_remove_header_udf"] = {
     init: function () {
       this.appendDummyInput()
@@ -284,14 +205,7 @@ export function getPySparkToolbox() {
         kind: "category",
         name: "UDF Operations",
         colour: "290",
-        contents: [
-          { kind: "block", type: "pyspark_define_simple_udf" },
-          { kind: "block", type: "pyspark_double_value_udf" },
-          { kind: "block", type: "pyspark_string_length_udf" },
-          { kind: "block", type: "pyspark_is_null_udf" },
-          { kind: "block", type: "pyspark_apply_udf" },
-          { kind: "block", type: "pyspark_remove_header_udf" },
-        ],
+        contents: [{ kind: "block", type: "pyspark_remove_header_udf" }],
       },
       {
         kind: "category",
