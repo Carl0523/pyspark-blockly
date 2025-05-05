@@ -216,7 +216,7 @@ export function getPySparkToolbox() {
             kind: "block",
             type: "text",
             fields: {
-              TEXT: "/data/file.csv",
+              TEXT: "/data/aircrafts_data.csv",
             },
           },
           {
