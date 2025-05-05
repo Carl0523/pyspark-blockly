@@ -1,7 +1,7 @@
 // lib/pyspark.ts - Updated to include text blocks
 import * as rddOperations from "./pyspark_rdd_operations";
 import * as variableOperations from "./pyspark_variable_operations"; // Add this line
-
+import * as lambdaOperations from "./pyspark_lambda_operations";
 import * as udfOperations from "./pyspark_udf_operations";
 import { PySparkGenerator } from "./pyspark-generator";
 import * as Blockly from "blockly";
@@ -29,7 +29,7 @@ pysparkGenerator.forBlock['variables_get'] = pythonGenerator.forBlock['variables
 pysparkGenerator.forBlock['variables_set'] = pythonGenerator.forBlock['variables_set'];
 
 // Add custom PySpark blocks
-const generators = { ...rddOperations, ...udfOperations, ...variableOperations };
+const generators = { ...rddOperations, ...udfOperations, ...variableOperations, ...lambdaOperations };
 
 Object.entries(generators).forEach(([name, generator]) => {
   pysparkGenerator.forBlock[name as keyof typeof pysparkGenerator.forBlock] =

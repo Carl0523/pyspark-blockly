@@ -65,6 +65,26 @@ function defineRDDBlocks() {
       this.setHelpUrl("");
     },
   };
+
+  Blockly.Blocks["pyspark_apply_function_to_rdd"] = {
+    init: function (this: Blockly.Block) {
+      this.appendValueInput("RDD")
+        .setCheck("RDD")
+        .appendField("Apply function");
+      this.appendDummyInput().appendField(
+        new Blockly.FieldTextInput("remove_header"),
+        "FUNCTION_NAME"
+      );
+      this.appendDummyInput()
+        .appendField("with parameters")
+        .appendField(new Blockly.FieldTextInput(""), "PARAMETERS");
+
+      this.setOutput(true, "RDD");
+      this.setColour(230);
+      this.setTooltip("Apply a function to an RDD with optional parameters");
+      this.setHelpUrl("");
+    },
+  };
 }
 
 function defineUDFBlocks() {
@@ -146,6 +166,19 @@ function defineUDFBlocks() {
       this.setHelpUrl("");
     },
   };
+
+  Blockly.Blocks["pyspark_remove_header_udf"] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("Define Remove Header UDF")
+        .appendField(new Blockly.FieldTextInput("remove_header"), "UDF_NAME");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(290);
+      this.setTooltip("Define a UDF that removes the header row from CSV data");
+      this.setHelpUrl("");
+    },
+  };
 }
 
 function defineVariableBlocks() {
@@ -180,9 +213,7 @@ function defineVariableBlocks() {
   // Create a print block
   Blockly.Blocks["pyspark_print"] = {
     init: function (this: Blockly.Block) {
-      this.appendValueInput("VALUE")
-        .setCheck(null)
-        .appendField("Print");
+      this.appendValueInput("VALUE").setCheck(null).appendField("Print");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(160);
@@ -192,10 +223,25 @@ function defineVariableBlocks() {
   };
 }
 
+function defineLambdaBlocks() {
+  Blockly.Blocks["pyspark_lambda"] = {
+    init: function (this: Blockly.Block) {
+      this.appendDummyInput()
+        .appendField("lambda")
+        .appendField(new Blockly.FieldTextInput("x: x"), "LAMBDA");
+      this.setOutput(true, null);
+      this.setColour(210);
+      this.setTooltip("A lambda function (without quotes)");
+      this.setHelpUrl("");
+    },
+  };
+}
+
 export function definePySparkBlocks() {
   defineRDDBlocks();
   defineUDFBlocks();
   defineVariableBlocks();
+  defineLambdaBlocks();
 }
 
 /**
@@ -238,6 +284,7 @@ export function getPySparkToolbox() {
           { kind: "block", type: "pyspark_rdd_filter" },
           { kind: "block", type: "pyspark_rdd_reducebykey" },
           { kind: "block", type: "pyspark_rdd_collect" },
+          { kind: "block", type: "pyspark_apply_function_to_rdd" },
         ],
       },
       {
@@ -250,6 +297,7 @@ export function getPySparkToolbox() {
           { kind: "block", type: "pyspark_string_length_udf" },
           { kind: "block", type: "pyspark_is_null_udf" },
           { kind: "block", type: "pyspark_apply_udf" },
+          { kind: "block", type: "pyspark_remove_header_udf" },
         ],
       },
       {
@@ -259,37 +307,9 @@ export function getPySparkToolbox() {
         contents: [
           {
             kind: "block",
-            type: "text",
+            type: "pyspark_lambda",
             fields: {
-              TEXT: 'lambda x: x.split(",")',
-            },
-          },
-          {
-            kind: "block",
-            type: "text",
-            fields: {
-              TEXT: "lambda x: float(x[1])",
-            },
-          },
-          {
-            kind: "block",
-            type: "text",
-            fields: {
-              TEXT: "lambda x: (x[0], x[1])",
-            },
-          },
-          {
-            kind: "block",
-            type: "text",
-            fields: {
-              TEXT: "lambda a, b: a + b",
-            },
-          },
-          {
-            kind: "block",
-            type: "text",
-            fields: {
-              TEXT: 'lambda x: x.startswith("A")',
+              LAMBDA: 'x: x.split(",")',
             },
           },
         ],
@@ -303,7 +323,7 @@ export function getPySparkToolbox() {
           { kind: "block", type: "pyspark_variable_get" },
           { kind: "block", type: "pyspark_print" },
         ],
-      }
+      },
     ],
   };
 }

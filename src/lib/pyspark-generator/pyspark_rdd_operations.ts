@@ -75,3 +75,25 @@ export function pyspark_rdd_collect(
     const code = `print(${rdd}.collect())`;
     return [code, Order.FUNCTION_CALL];
 }
+
+/**
+ * Apply a function to an RDD with optional parameters
+ */
+export function pyspark_apply_function_to_rdd(
+  block: Block,
+  generator: PySparkGenerator
+): [string, Order] {
+  const rdd = generator.valueToCode(block, 'RDD', Order.MEMBER) || 'sc.emptyRDD()';
+  const functionName = block.getFieldValue('FUNCTION_NAME');
+  const parameters = block.getFieldValue('PARAMETERS');
+  
+  let code = '';
+  
+  if (parameters.trim() === '') {
+    code = `${functionName}(${rdd})`;
+  } else {
+    code = `${functionName}(${rdd}, ${parameters})`;
+  }
+  
+  return [code, Order.FUNCTION_CALL];
+}

@@ -59,7 +59,6 @@ export async function POST(request: NextRequest) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
 
-    
     fs.writeFileSync(scriptPath, code);
     
     try {
