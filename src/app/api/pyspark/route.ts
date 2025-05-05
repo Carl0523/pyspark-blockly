@@ -1,4 +1,3 @@
-// app/api/run-pyspark/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { exec } from 'child_process';
 import fs from 'fs';
