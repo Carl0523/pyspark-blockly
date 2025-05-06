@@ -91,25 +91,55 @@ export class PySparkGenerator extends PythonGenerator {
     if (!block) {
       return "";
     }
-
-    // First check if we have a PySpark-specific block handler
+  
+    // Check if we have a handler for the block
     const blockType = block.type;
     if (blockType in this.forBlock) {
       const result = this.forBlock[blockType].call(this, block, this);
-      // Handle null result case
       if (result === null) {
         return "";
       }
+  
+      if (typeof result === "string") {
+        return this.scrub_(block, result, opt_thisOnly);
+      }
+  
+      if (!opt_thisOnly && Array.isArray(result) && typeof result[0] === "string") {
+        result[0] = this.scrub_(block, result[0], opt_thisOnly);
+      }
+  
       return result;
     }
-
-    // If not, fall back to Python's handling
+  
+    // Fall back to parent generator
     const result = super.blockToCode(block, opt_thisOnly);
-    // Handle null result case
     if (result === null) {
       return "";
     }
-    return result;
+  
+    // Also apply scrub_ here if fallback result is a string
+    if (typeof result === "string") {
+      return this.scrub_(block, result, opt_thisOnly);
+    } else {
+      return result;
+    }
+  }
+  
+
+  scrub_(block: Block, code: string, opt_thisOnly?: boolean): string {
+    // If this is the only block we care about, return just its code.
+    if (opt_thisOnly) {
+      return code;
+    }
+  
+    // Check if the current block is followed by another block in a statement stack
+    const nextBlock = block.getNextBlock();
+    const nextCode = nextBlock ? this.blockToCode(nextBlock) : "";
+  
+    // If blockToCode returns a [string, order] array, unwrap it
+    const nextCodeStr = Array.isArray(nextCode) ? nextCode[0] : nextCode;
+  
+    return code + nextCodeStr;
   }
 
   
